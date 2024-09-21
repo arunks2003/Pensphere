@@ -37,7 +37,7 @@ function MyState(props) {
     const [loading, setloading] = useState(false)
     const [getAllBlog, setGetAllBlog] = useState([]);
 
-    function getAllBlogs() {
+    function getAllBlogsFunc() {
         setloading(true);
         try {
             const q = query(
@@ -61,13 +61,12 @@ function MyState(props) {
             setloading(false)
         }
     }
-
     function searchBlog({ }) {
 
     }
 
     useEffect(() => {
-        getAllBlogs();
+        getAllBlogsFunc();
     }, []);
     return (
         <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog }}>

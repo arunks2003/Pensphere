@@ -1,9 +1,12 @@
 import MyContext from '@/context/data/MyContext'
 import Layout from '@/file-components/layout/Layout'
 import { Button } from '@material-tailwind/react'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Loader from '../../../file-components/loader/Loader'
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
+import toast from 'react-hot-toast'
+import { fireDB } from '@/firebase/FirebaseConfig'
 
 const Dashboard = () => {
     const context = useContext(MyContext);
@@ -23,8 +26,45 @@ const Dashboard = () => {
             toast.error('Logout failed');
         }
     };
-    const { mode, getAllBlog, loading } = context;
-    console.log(getAllBlog)
+    const { mode } = context;
+    const [blogs, setBlogs] = useState([]);
+    const [flag, setFlag] = useState(false);
+    function getAllBlogsFunc() {
+        try {
+            const q = query(
+                collection(fireDB, "blogPost"),
+                orderBy('time')
+            );
+            const data = onSnapshot(q, (QuerySnapshot) => {
+                let blogArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    blogArray.push({ ...doc.data(), id: doc.id });
+                });
+
+                setBlogs(blogArray)
+                // console.log(productsArray) 
+            });
+            return () => data;
+        } catch (error) {
+            console.log(error)
+            // setloading(false)
+        }
+    }
+    useEffect(() => {
+        getAllBlogsFunc();
+    }, [flag])
+    const deleteblog = async (id) => {
+        console.log("Deleting document with ID:", id);
+        try {
+            const docRef = doc(fireDB, 'blogPost', id);
+            await deleteDoc(docRef);
+            toast.success("Document deleted successfully!");
+            setFlag(!flag);
+        } catch (error) {
+            console.error("Error deleting document:", error);
+            toast.error("Error deleting document. Please try again.");
+        }
+    };
     return (
         <div>
             <Layout>
@@ -52,7 +92,7 @@ const Dashboard = () => {
                             </h2>
                             <h2
                                 style={{ color: mode === 'dark' ? 'white' : 'black' }} className="font-semibold">
-                                <span>Total Blog : </span>  {getAllBlog.length}
+                                <span>Total Blog : </span>  {blogs.length}
                             </h2>
                             <div className=" flex gap-2 mt-2">
                                 <Link to={'/create-blog'}>
@@ -108,12 +148,11 @@ const Dashboard = () => {
                                     </thead>
                                     {/* tbody  */}
                                     {
-                                        getAllBlog.length > 0
+                                        blogs.length > 0
                                             ?
                                             <>
-                                                {getAllBlog.map((item, index) => {
+                                                {blogs.map((item, index) => {
                                                     const { thumbnail, date } = item;
-                                                    console.log(item)
                                                     return (
                                                         <tbody>
                                                             <tr className=" border-b-2" style={{ background: mode === 'dark' ? 'rgb(30, 41, 59)' : 'white' }}>
@@ -141,7 +180,7 @@ const Dashboard = () => {
                                                                 </td>
                                                                 {/* Delete Blog  */}
                                                                 <td style={{ color: mode === 'dark' ? 'white' : 'black' }} className="px-6 py-4">
-                                                                    <Button className=' px-4 py-1 rounded-lg text-white font-bold bg-red-500'>
+                                                                    <Button onClick={(e) => deleteblog(item.id)} className=' px-4 py-1 rounded-lg text-white font-bold bg-red-500'>
                                                                         Delete
                                                                     </Button>
                                                                 </td>
@@ -150,9 +189,8 @@ const Dashboard = () => {
                                                     )
                                                 })}</>
                                             :
-                                            <>
-                                                <h1>Not Found</h1>
-                                            </>
+                                            <Loader>
+                                            </Loader>
                                     }
                                 </table>
                             </div>

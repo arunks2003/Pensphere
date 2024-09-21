@@ -1,4 +1,5 @@
 import MyContext from '@/context/data/MyContext';
+import { Loader } from 'lucide-react';
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +34,8 @@ const BlogPostCard = () => {
                 })
             }</>
                 : <>
-                    <h1 className='text-xl font-bold'>Not Found</h1>
+                    <Loader>
+                    </Loader>
                 </>}
 
         </>
