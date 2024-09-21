@@ -69,7 +69,7 @@ function MyState(props) {
         getAllBlogsFunc();
     }, []);
     return (
-        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog }}>
+        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog,setGetAllBlog }}>
             {props.children}
         </MyContext.Provider>
     )
