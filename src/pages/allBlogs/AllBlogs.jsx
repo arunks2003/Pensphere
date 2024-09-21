@@ -1,8 +1,13 @@
+import MyContext from '@/context/data/MyContext'
 import BlogPostCard from '@/file-components/blogPostCard/BlogPostCard'
 import Layout from '@/file-components/layout/Layout'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 
 const AllBlogs = () => {
+    const { getAllBlog } = useContext(MyContext)
+    useEffect(() => {
+        console.log('getAllBlog has changed: ', getAllBlog);
+    }, [getAllBlog]);
     return (
         <Layout>
             <p className='font-serif text-5xl flex justify-center mt-4 underline'>All Blogs</p>

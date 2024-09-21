@@ -18,7 +18,7 @@ const CreateBlog = () => {
     const apiKey = import.meta.env.VITE_API_KEY;
     const context = useContext(MyContext);
     const { mode, user } = context;
-    console.log(user.email)
+    // console.log(user.email)
 
     const navigate = useNavigate();
 
