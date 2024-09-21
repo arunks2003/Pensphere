@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
 function MyState(props) {
-    const [mode, setMode] = useState('light'); // Whether dark mode is enabled or not
+    const [mode, setMode] = useState('light');
     const toggleMode = () => {
         if (mode === 'light') {
             setMode('dark');
@@ -36,6 +36,7 @@ function MyState(props) {
     const [searchKey, setSearchKey] = useState('');
     const [loading, setloading] = useState(false)
     const [getAllBlog, setGetAllBlog] = useState([]);
+
     function getAllBlogs() {
         setloading(true);
         try {
@@ -61,11 +62,15 @@ function MyState(props) {
         }
     }
 
+    function searchBlog({ }) {
+
+    }
+
     useEffect(() => {
         getAllBlogs();
     }, []);
     return (
-        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog }}>
+        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog }}>
             {props.children}
         </MyContext.Provider>
     )

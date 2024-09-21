@@ -17,6 +17,7 @@ import MyState from './context/data/MyState';
 import toast, { Toaster } from 'react-hot-toast';
 import CreateBlog from './pages/admin/createBlog/CreateBlog';
 import Register from './pages/register/Register';
+import ForgotPassword from './pages/change-password/ForgotPassword';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/create-blog" element={<ProtectedRouteForUser><CreateBlog /></ProtectedRouteForUser>} />
         <Route path="/*" element={<NoPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path='/forgot-password' element={<ForgotPassword></ForgotPassword>}></Route>
       </Routes>
     </MyState>
   )
