@@ -61,15 +61,39 @@ function MyState(props) {
             setloading(false)
         }
     }
-    function searchBlog({ }) {
-
-    }
 
     useEffect(() => {
         getAllBlogsFunc();
     }, []);
+
+    const [filteredBlogs, setFilteredBlogs] = useState([]);
+
+    const filterBlogs = (searchTerm) => {
+        const filtered = getAllBlog.filter(item => {
+            return (
+            
+                (item.blogs.title?.toLowerCase().includes(searchTerm) ||
+                item.blogs.content?.toLowerCase().includes(searchTerm) ||
+                item.blogs.category?.toLowerCase().includes(searchTerm))
+            );
+        });
+        // console.log("filtered Blogs:", filtered);
+        setFilteredBlogs(filtered);
+    };
+
+    useEffect(() => {
+        console.log('searchKey:', searchKey);
+        console.log('getAllBlog:', getAllBlog);
+        setFilteredBlogs(getAllBlog);
+        if (searchKey.length > 0) {
+            filterBlogs(searchKey.toLowerCase());
+        } else {
+            setFilteredBlogs(getAllBlog); // Reset to all blogs if no search
+        }
+    }, [searchKey, getAllBlog]);
+
     return (
-        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog,setGetAllBlog }}>
+        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, setGetAllBlog, filteredBlogs }}>
             {props.children}
         </MyContext.Provider>
     )

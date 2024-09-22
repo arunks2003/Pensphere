@@ -16,7 +16,7 @@ import MyContext from "@/context/data/MyContext";
 export function SeachDialog() {
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
-    const { getAllBlog, setGetAllBlog } = useContext(MyContext);
+    const {setSearchKey}=useContext(MyContext)
 
     const handleSearchInputChange = (event) => {
         setSearch(event.target.value);
@@ -24,20 +24,8 @@ export function SeachDialog() {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        filterBlogs(search.toLowerCase());
+        setSearchKey(search.toLowerCase());
         setOpen(false); // Close the dialog
-    };
-
-    const filterBlogs = (searchTerm) => {
-        const filtered = getAllBlog.filter(item => {
-            return (
-                item.blogs &&
-                (item.blogs.title?.toLowerCase().includes(searchTerm) ||
-                item.blogs.content?.toLowerCase().includes(searchTerm) ||
-                item.blogs.category?.toLowerCase().includes(searchTerm))
-            );
-        });
-        setGetAllBlog(filtered);
     };
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {

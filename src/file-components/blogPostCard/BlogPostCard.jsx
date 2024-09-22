@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const BlogPostCard = () => {
     const context = useContext(MyContext);
-    const { mode, getAllBlog, user } = context;
+    const { mode, user,filteredBlogs } = context;
     // console.log(user.email);
     const navigate = useNavigate();
     const htmlToPlainText = (html) => {
@@ -19,8 +19,8 @@ const BlogPostCard = () => {
     }
     return (
         <>
-            {getAllBlog.length > 0 ? <>{
-                getAllBlog.map((item, index) => {
+            {filteredBlogs.length > 0 ? <>{
+                filteredBlogs.map((item, index) => {
                     const { thumbnail, id, date } = item
                     console.log(item)
                     const plainText = htmlToPlainText(item.blogs.content);
