@@ -12,12 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CiSearch } from "react-icons/ci";
 import MyContext from "@/context/data/MyContext";
-import MyState from "@/context/data/MyState";
 
 export function SeachDialog() {
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
-    const { getAllBlog, setGetAllBlog, arr } = useContext(MyContext);
+    const { setSearchKey } = useContext(MyContext)
 
     const handleSearchInputChange = (event) => {
         setSearch(event.target.value);
@@ -25,20 +24,8 @@ export function SeachDialog() {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        filterBlogs(search.toLowerCase());
+        setSearchKey(search.toLowerCase());
         setOpen(false); // Close the dialog
-    };
-
-    const filterBlogs = (searchTerm) => {
-        const filtered = getAllBlog.filter(item => {
-            return (
-                item.blogs &&
-                (item.blogs.title?.toLowerCase().includes(searchTerm) ||
-                    item.blogs.content?.toLowerCase().includes(searchTerm) ||
-                    item.blogs.category?.toLowerCase().includes(searchTerm))
-            );
-        });
-        setGetAllBlog(filtered);
     };
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
