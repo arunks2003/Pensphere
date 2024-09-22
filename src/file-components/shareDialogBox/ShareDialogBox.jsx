@@ -1,5 +1,5 @@
-import { Copy } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogClose,
@@ -9,12 +9,26 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { CiShare2 } from "react-icons/ci";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export function ShareDialogBox() {
+    const [link, setLink] = useState(window.location.href);
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(link)
+            .then(() => {
+                toast.success("Link copied!!")
+            })
+            .catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+    };
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -34,11 +48,11 @@ export function ShareDialogBox() {
                         </Label>
                         <Input
                             id="link"
-                            defaultValue={window.location.href}
+                            value={link}
                             readOnly
                         />
                     </div>
-                    <Button type="submit" size="sm" className="px-3">
+                    <Button onClick={copyToClipboard} size="sm" className="px-3">
                         <span className="sr-only">Copy</span>
                         <Copy className="h-4 w-4" />
                     </Button>
@@ -52,5 +66,5 @@ export function ShareDialogBox() {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
+    );
 }

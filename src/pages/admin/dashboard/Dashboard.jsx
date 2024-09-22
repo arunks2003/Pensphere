@@ -7,6 +7,18 @@ import Loader from '../../../file-components/loader/Loader'
 import { collection, deleteDoc, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
 import toast from 'react-hot-toast'
 import { fireDB } from '@/firebase/FirebaseConfig'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 const Dashboard = () => {
     const context = useContext(MyContext);
@@ -180,9 +192,26 @@ const Dashboard = () => {
                                                                 </td>
                                                                 {/* Delete Blog  */}
                                                                 <td style={{ color: mode === 'dark' ? 'white' : 'black' }} className="px-6 py-4">
-                                                                    <Button onClick={(e) => deleteblog(item.id)} className=' px-4 py-1 rounded-lg text-white font-bold bg-red-500'>
+                                                                    {/* <Button onClick={(e) => deleteblog(item.id)} className=' px-4 py-1 rounded-lg text-white font-bold bg-red-500'>
                                                                         Delete
-                                                                    </Button>
+                                                                    </Button> */}
+                                                                    <AlertDialog>
+                                                                        <AlertDialogTrigger asChild>
+                                                                            <Button variant="outline" className="text-red-500 border-red-500 hover:bg-red-500 hover:text-white">Delete</Button>
+                                                                        </AlertDialogTrigger>
+                                                                        <AlertDialogContent>
+                                                                            <AlertDialogHeader>
+                                                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                                <AlertDialogDescription> This will permanently delete this blog
+                                                                                    and remove your data from our servers.
+                                                                                </AlertDialogDescription>
+                                                                            </AlertDialogHeader>
+                                                                            <AlertDialogFooter>
+                                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                                <AlertDialogAction className="text-red-500 border-red-500 hover:bg-red-500 hover:text-white" onClick={(e) => deleteblog(item.id)}>Delete</AlertDialogAction>
+                                                                            </AlertDialogFooter>
+                                                                        </AlertDialogContent>
+                                                                    </AlertDialog>
                                                                 </td>
                                                             </tr>
                                                         </tbody>

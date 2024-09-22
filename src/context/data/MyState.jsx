@@ -36,6 +36,7 @@ function MyState(props) {
     const [searchKey, setSearchKey] = useState('');
     const [loading, setloading] = useState(false)
     const [getAllBlog, setGetAllBlog] = useState([]);
+    const [arr, setArray] = useState([]);
 
     function getAllBlogsFunc() {
         setloading(true);
@@ -51,9 +52,9 @@ function MyState(props) {
                 });
 
                 setGetAllBlog(blogArray)
+                setArray(blogArray);
                 // console.log(productsArray)   
                 setloading(false)
-
             });
             return () => data;
         } catch (error) {
@@ -69,7 +70,7 @@ function MyState(props) {
         getAllBlogsFunc();
     }, []);
     return (
-        <MyContext.Provider value={{ mode, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog,setGetAllBlog }}>
+        <MyContext.Provider value={{ mode, arr, setArray, toggleMode, user, searchKey, setSearchKey, loading, setloading, getAllBlog, searchBlog, setGetAllBlog }}>
             {props.children}
         </MyContext.Provider>
     )

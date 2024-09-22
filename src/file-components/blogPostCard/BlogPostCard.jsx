@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const BlogPostCard = () => {
     const context = useContext(MyContext);
-    const { mode, getAllBlog, user } = context;
+    const { mode, getAllBlog, user, arr } = context;
     // console.log(user.email);
     const navigate = useNavigate();
     const htmlToPlainText = (html) => {

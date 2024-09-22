@@ -10,8 +10,15 @@ module.exports = withMT({
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      lineClamp: {
+        2: "2", // This sets up a class for clamping to 3 lines
+      },
       colors: {},
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/forms")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/line-clamp"),
+  ],
 });
