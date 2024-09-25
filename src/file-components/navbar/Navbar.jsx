@@ -14,7 +14,6 @@ const navigation = [
     { name: 'Dashboard', href: '/dashboard', current: true },
     { name: 'Blogs', href: '/allblogs', current: false },
     { name: 'Create Blog', href: '/create-blog', current: false },
-    { name: 'Calendar', href: '#', current: false },
 ]
 
 function classNames(...classes) {
@@ -39,7 +38,7 @@ const Navbar = () => {
             toast.error('Logout failed');
         }
     };
-    console.log(user)
+    // console.log(user)
     return (
         <Disclosure as="nav" className="bg-black">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

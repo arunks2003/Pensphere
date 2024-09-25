@@ -12,14 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CiSearch } from "react-icons/ci";
 import MyContext from "@/context/data/MyContext";
+import Loader from "../loader/Loader";
 
 export function SeachDialog() {
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
-    const { setSearchKey } = useContext(MyContext)
+    const { setSearchKey, suggestion, setFlag, flag } = useContext(MyContext)
 
     const handleSearchInputChange = (event) => {
-        setSearch(event.target.value);
+        setSearch(event.target.value.toLowerCase());
+        setSearchKey(event.target.value.toLowerCase())
     };
 
     const handleSearch = (event) => {
@@ -56,6 +58,21 @@ export function SeachDialog() {
                             className="col-span-3"
                         />
                     </div>
+                    {suggestion.length > 0 ? <>{
+                        suggestion.map((item, index) => {
+                            return (
+                                <div className="max-w-sm max-h-64 overflow-y-auto rounded overflow-hidden shadow-lg hover:cursor-pointer hover:shadow-2xl hover:scale-105 transition-transform duration-300" key={index}>
+                                    <p onClick={(e) => { setSearchKey(item); setSearch(item); console.log(item); setFlag(!flag); }}>{item}</p>
+                                </div>
+                            )
+                        })
+                    }</>
+                        : <>{
+                            search ?
+                                <Loader>
+                                </Loader> : ""
+                        }
+                        </>}
                 </div>
                 <DialogFooter>
                     <Button type="submit" onClick={handleSearch} >Search</Button>

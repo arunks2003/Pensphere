@@ -34,7 +34,7 @@ const CreateBlog = () => {
         category: '',
         content: '',
         time: Timestamp.now(),
-        author: user.email,
+        author: user?.email,
     });
     const [thumbnail, setthumbnail] = useState();
 
@@ -50,39 +50,41 @@ const CreateBlog = () => {
     //* Upload Image Function 
     const uploadImage = () => {
         if (!thumbnail) return;
+
         const imageRef = ref(storage, `blogimage/${thumbnail.name}`);
-        uploadBytes(imageRef, thumbnail).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((url) => {
-                const productRef = collection(fireDB, "blogPost")
-                try {
-                    addDoc(productRef, {
-                        blogs,
-                        thumbnail: url,
-                        time: Timestamp.now(),
-                        date: new Date().toLocaleString(
-                            "en-US",
-                            {
-                                month: "short",
-                                day: "2-digit",
-                                year: "numeric",
-                            }
-                        )
-                    })
-                    navigate('/dashboard')
-                    toast.success('Post Added Successfully');
 
-
-                } catch (error) {
-                    toast.error(error)
-                    console.log(error)
-                }
+        uploadBytes(imageRef, thumbnail)
+            .then((snapshot) => {
+                return getDownloadURL(snapshot.ref);
+            })
+            .then((url) => {
+                const productRef = collection(fireDB, "blogPost");
+                return addDoc(productRef, {
+                    blogs,
+                    thumbnail: url,
+                    time: Timestamp.now(),
+                    date: new Date().toLocaleString(
+                        "en-US",
+                        {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                        }
+                    ),
+                });
+            })
+            .then(() => {
+                navigate('/dashboard');
+                toast.success('Post Added Successfully');
+            })
+            .catch((error) => {
+                toast.error(error.message);
+                console.error("Error adding document: ", error);
             });
-        });
+
     }
 
     const [text, settext] = useState('');
-    console.log("Value: ",);
-    console.log("text: ", text);
 
     //* Create markup function 
     function createMarkup(c) {

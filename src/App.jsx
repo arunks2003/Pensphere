@@ -18,6 +18,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import CreateBlog from './pages/admin/createBlog/CreateBlog';
 import Register from './pages/register/Register';
 import ForgotPassword from './pages/change-password/ForgotPassword';
+import ImageGenerator from './pages/img-gen/ImageGenerate';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/create-blog" element={<ProtectedRouteForUser><CreateBlog /></ProtectedRouteForUser>} />
         <Route path="/*" element={<NoPage />} />
+        <Route path="/gen-img" element={<ImageGenerator />} />
         <Route path="/register" element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword></ForgotPassword>}></Route>
       </Routes>
