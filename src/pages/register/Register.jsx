@@ -1,7 +1,7 @@
 import Layout from '@/file-components/layout/Layout'
 import { auth } from '@/firebase/FirebaseConfig';
 import { Button } from '@material-tailwind/react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
@@ -15,24 +15,28 @@ const Register = () => {
 
     //* Login Function
     const register = async (event) => {
-        event.preventDefault(); // Add this to prevent form submission
+        event.preventDefault();
+
         if (!email || !password || !confirmPass) {
             return toast.error("Fill all required fields.");
+        } else if (password !== confirmPass) {
+            return toast.error("Passwords do not match.");
         }
-        else {
-            if (password !== confirmPass) {
-                return toast.error("Passwords do not match.");
-            }
-        }
+
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            toast.success('User registered:');
-            navigate('/')
+            toast.success('User registered successfully.');
+
+            // Sign the user out immediately after registration
+            await signOut(auth);
+
+            // Redirect to login page or other page
+            navigate('/admin-login');
         } catch (error) {
-            toast.error('Error registering user:');
+            toast.error('Error registering user: ' + error.message);
         }
-    }
+    };
 
 
     return (
@@ -43,7 +47,7 @@ const Register = () => {
                         <img src="https://github.com/arunks2003/images/blob/main/icon.png?raw=true" alt="" style={{ height: "70px" }} />
                     </div>
                     <h2 className="mt-10 font-serif text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in to your account
+                        Register to out site
                     </h2>
                 </div>
 
@@ -116,9 +120,9 @@ const Register = () => {
                     </form>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
-                        Not a member?{' '}
-                        <Link to="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                            Start a 14 day free trial
+                        Already a member?{' '}
+                        <Link to="/admin-login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                            Login
                         </Link>
                     </p>
                 </div>
